@@ -30,5 +30,5 @@ uptosciAPI
 <p>3.测试程序</p>
 
 
-<h4 style='color:red;'>注意：</h4>
+<h4>注意：</h4>
 <p>本例只是简单的一个demo展示</p>
