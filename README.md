@@ -18,7 +18,7 @@ uptosciAPI
 <p>oauth.class.php 博文网 OAuth 认证类(OAuth2)、操作类</p>
 <p>index.php 首页</p>
 <p>config.php 配置文件</p>
-<p>callbacl.php 回调处理方法</p>
+<p>callback.php 回调处理方法</p>
 <p>list.php 报道列表信息</p>
 <p>news.php 业内新闻列表信息</p>
 <p>showdetail.php 文献详情</p>
