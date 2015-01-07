@@ -15,7 +15,7 @@ $c = new uptosciClient( CLINET_KEY , CLINET_SKEY , $_SESSION['token']['access_to
 	if( $data['info'] && !isset($data['error'])){
 		foreach( $data['info'] AS $v ){
 ?>
-<h2><a href='/demo/weboauth/newsshow.php?id=<?php echo $v['id']?>' target='_blank'><?php echo $v['title'];?></a></h2>
+<h2><a href='javascript:;' target='_blank'><?php echo $v['title'];?></a></h2>
 
 <p><?php echo $v['description']?></p>
 
