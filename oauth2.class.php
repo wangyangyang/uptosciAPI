@@ -587,5 +587,30 @@ class uptosciClient{
 		$result =  $this->oauth->get( 'member/index' );
 		Return $result;
 	}
+	
+	/**
+	* 经典病例
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$page 当前页
+	*/
+	public function caselist( $page = 1 ){
+		$params = array('page'=>$page);
+		$result =  $this->oauth->get( 'cases' ,$params);
+		Return $result;
+	}
 
+	/**
+	* 经典病例详情
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 
+	*/
+	public function caseshow( $id = ''){
+		$params = array('id'=>$id);
+		$result =  $this->oauth->get('cases/show', $params);
+		return $result;
+	}
 }
