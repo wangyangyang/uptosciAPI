@@ -113,6 +113,7 @@ class UptosciOAuth2 {
 		return 'http://api.uptosci.com/index.php/oauth/oauth2/authorize';
 	}
 
+
 	/**
 	 * @ignore
 	 */
@@ -134,14 +135,15 @@ class UptosciOAuth2 {
 	 * authorize接口
 	 * @param string $url 授权后的回调地址,需与回调地址一致
 	 * @param string $response_type 支持的值包括 code 和token 默认值为code
+	 * @param bool $login 是否为用户登录处理
 	 * @return array
 	 */
-	function getAuthorizeURL( $url, $response_type = 'code' , $login = false ) {
+	function getAuthorizeURL( $url, $response_type = 'code' ,$login = false) {
 		$params = array();
 		$params['client_id'] = $this->client_id;
 		$params['redirect_uri'] = $url;
 		$params['response_type'] = $response_type;
-		if ($login ) {
+		if ( $login ) {
 			return $this->authenticateURL() . "?" . http_build_query($params);
 		}else{
 			return $this->authorizeURL() . "?" . http_build_query($params);
@@ -423,12 +425,12 @@ class uptosciClient{
 	* @version		1.0
 	* @param
 	*/
-	public function reprots_list( $report = '', $page = '1'  ){
+	public function reprots_list( $report = '' , $page = 1 ){
 		$params = array();
 		if($report){
 			$params['report'] = $report;
 		}
-		$params['page']		=	$page;
+		$params['page']	  = $page;
 		$result =  $this->oauth->get('report', $params);
 		return $result;
 	}
@@ -456,6 +458,19 @@ class uptosciClient{
 	public function search( $keywords , $page = '1' ){
 		$params = array('keywords'=>$keywords ,'page' => $page );
 		$result =  $this->oauth->post('pubmed/searchresult', $params);
+		return $result;
+	}
+
+	/**
+	* 文献搜索，本地搜索
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param
+	*/
+	public function lsearch( $keywords , $page = '1' ){
+		$params = array('keywords'=>$keywords ,'page' => $page );
+		$result =  $this->oauth->post('pubmed/searchlresult', $params);
 		return $result;
 	}
 	
@@ -585,22 +600,35 @@ class uptosciClient{
 	*/
 	public function showuserinfo( ){
 		$result =  $this->oauth->get( 'member/index' );
-		Return $result;
+		return $result;
 	}
-	
+
 	/**
-	* 经典病例
+	* 文章赞处理
 	* @author		wangyangyang
 	* @copyright	wangyang8839@163.com
 	* @version		1.0
-	* @param		$page 当前页
+	* @param		$id 文章id，$type 类型
 	*/
-	public function caselist( $page = 1 ){
-		$params = array('page'=>$page);
-		$result =  $this->oauth->get( 'cases' ,$params);
-		Return $result;
+	public function approve( $id , $type ){
+		$params = array('id'=>$id,'type'=>$type);
+		$result =  $this->oauth->post( 'approve/index' ,$params );
+		return $result;
 	}
 
+	/**
+	* 获得文章赞数量
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 文章id，$type 类型
+	*/
+	public function get_approve( $id , $type ){
+		$params = array('id'=>$id,'type'=>$type);
+		$result =  $this->oauth->post( 'approve/get' ,$params );
+		return $result;
+	}
+	
 	/**
 	* 经典病例详情
 	* @author		wangyangyang
@@ -611,6 +639,98 @@ class uptosciClient{
 	public function caseshow( $id = ''){
 		$params = array('id'=>$id);
 		$result =  $this->oauth->get('cases/show', $params);
+		return $result;
+	}
+
+	/**
+	* 关键词查询
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$page 当前页
+	*/
+	public function keywords( $keywords , $page = '1' ){
+		$params = array('keywords'=>$keywords ,'page'=>$page);
+		$result =  $this->oauth->post( 'keywords' ,$params);
+		Return $result;
+	}
+
+	/**
+	* 关键词详情
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 
+	*/
+	public function keywordshow( $id = '' , $type = '',$page = '1'){
+		$params = array('id'=>$id,'type'=>$type,'page'=>$page);
+		$result =  $this->oauth->get('keywords/show', $params);
+		return $result;
+	}
+
+	/**
+	* 病例详情
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 
+	*/
+	public function diseaseshow( $id ){
+		$params = array('id'=>$id);
+		$result =  $this->oauth->get('disease/show', $params);
+		return $result;
+	}
+
+	/**
+	* 方剂详情
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 
+	*/
+	public function prenameshow( $id ){
+		$params = array('id'=>$id);
+		$result =  $this->oauth->get('prename/show', $params);
+		return $result;
+	}
+
+	/**
+	* 文库详情
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$id 
+	*/
+	public function libraryshow( $id ){
+		$params = array('id'=>$id);
+		$result =  $this->oauth->get('library/show', $params);
+		return $result;
+	}
+
+
+	/**
+	* 获取评论
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param
+	*/
+	public function comment( $linkid,$type = 1,$page = 1){
+		$params = array('linkid'=>$linkid,'type'=>$type,'page'=>$page);
+		$result =  $this->oauth->get('comment/lists', $params);
+		return $result;
+	}
+
+	/**
+	* 添加评论
+	* @author		wangyangyang
+	* @copyright	wangyang8839@163.com
+	* @version		1.0
+	* @param		$type 1:文献 2：报道 3：业内新闻
+	*/
+	public function addcomment( $id,$content,$type = 1){
+		$params = array('id'=>$id,'content'=>$content,'type'=>$type);
+		$result =  $this->oauth->post('comment/addcomment', $params);
 		return $result;
 	}
 }
