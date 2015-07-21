@@ -715,8 +715,8 @@ class uptosciClient{
 	* @version		1.0
 	* @param
 	*/
-	public function comment( $linkid,$type = 1,$page = 1){
-		$params = array('linkid'=>$linkid,'type'=>$type,'page'=>$page);
+	public function comment( $id,$type = 1,$page = 1){
+		$params = array('id'=>$id,'type'=>$type,'page'=>$page);
 		$result =  $this->oauth->get('comment/lists', $params);
 		return $result;
 	}
